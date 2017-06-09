@@ -1,0 +1,98 @@
+.tblDashboardColStatus{
+    border-radius: 0.25em;
+    color: #fff;
+    display: block;
+    font-size: 75%;
+    font-weight: bold;
+    line-height: 1;
+    padding: 0.2em 0.6em 0.3em;
+    text-align: center;
+    vertical-align: baseline;
+    white-space: nowrap;
+
+}
+
+.statusBound{
+    background-color: #027802;
+}
+
+.statusDeclined{
+    background-color: #6f6f6f;
+}
+
+.statusCancelled{
+    background-color: #b04215;
+}
+
+.statusQuoted{
+    background-color: #9aa200;
+}
+.statusBindable{
+    background-color: #61a247;
+}
+
+.statusSubmittedForBinding{
+    background-color: #027902;
+}
+
+.statusIncomplete{
+    background-color: #020291;
+}
+.statusSubmitted{
+    background-color: #3a68bf;
+}
+.gridStyle
+{
+    border: 1px solid rgb(212,212,212);
+    height: 300px;
+    overflow-x:auto;
+    overflow-y:hidden;
+}
+.icon-search {
+    margin-left:-25px;
+}
+.newSubmission{
+    width:70%;
+    margin:0 auto;
+    padding-top:20px;
+}
+
+
+/*
+css for filter */
+
+.multiSelect .button{
+
+    min-height: 0px !important;
+    padding: 1px 3px !important;
+}
+
+.multiSelect .caret {
+    margin: 0 0 1px 3px !important;
+}
+
+
+.multiSelect .multiSelectItem {
+    min-width: 187px !important;
+}
+
+.multiSelect .checkboxLayer {
+    min-width: 224px !important;
+
+}
+
+.myTable tr:hover{
+    cursor:pointer;
+}
+
+.width-15-per{
+    width: 16%;
+}
+
+.margin-top-23px{
+    margin-top: 23px;
+}
+
+/*.width-100-per{
+    width:100%;
+}*/

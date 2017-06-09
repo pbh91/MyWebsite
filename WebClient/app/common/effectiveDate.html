@@ -1,0 +1,10 @@
+﻿<div class="input-group">
+    <input type="text" class="form-control" name="effectiveDate" datepicker-popup="MM/dd/yyyy" onfocus="blur()" autocomplete="off" placeholder="Please choose from calendar"
+           ng-model="name" is-open="openedEffectiveDate"
+           datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" show-button-bar="false" ng-disabled="isdisabled == 1" required/>
+    <span class="input-group-btn">
+        <button type="button" class="btn btn-default" ng-click="openDatePickerEffectiveDate($event)" ng-disabled="isdisabled == 1 ">
+            <i class="glyphicon glyphicon-calendar"></i>
+        </button>
+    </span>
+</div>
