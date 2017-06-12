@@ -1,0 +1,349 @@
+<div ng-include="'common/navigationBar.html'"></div>
+<div class="body-content unsetBoxSizing home-ui-view-panel">
+    <!---->
+    <div class="section-inner clearfix">
+        <div class="row" ng-show="home.bindingSuspendedStates != null && home.bindingSuspendedStates != '' && home.bindingSuspendedStates != [] && home.bindingSuspended != true">
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <label class="icon-color-red font-size-12-px">*Binding Suspended for States: </label>
+                    <label ng-repeat="state in home.bindingSuspendedStates" class="icon-color-red font-size-12-px">{{state.StateName}}{{$last ? '' : ', '}}&nbsp;</label>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-show="home.bindingSuspended == true">
+            <div class="col-md-12">
+                <label class="icon-color-red font-size-12-px">*Binding process has been suspended.</label>
+            </div>
+        </div>
+        <div class="newSubmission">
+            <div class="row">
+                <div class="col-lg-12 text-center" ng-if="home.IsReadOnlyAllRole !== true">
+                    <a id="newSubmissionLink" href="javascript:void(0);" ng-click="home.startNewApplication()" class="btn btn-primary btn-lg">Start New Submission</a>
+                    &nbsp;&nbsp;<span ng-if="home.hasSuspendAccess == true"><a href="javascript:void(0);" ng-click="home.SuspendBinding()" class="btn btn-warning btn-lg">Suspend Binding</a></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-7 col-sm-7 col-xs-12">
+                <div class="col-lg-12 col-sm-12 col-xs-12"><h4>Summary of Prior Submissions:</h4></div>
+                <!--<button ng-click="home.download();">ABC</button>-->
+                <div class="col-lg-12 col-sm-12 col-xs-12" ng-show="home.hasTimeFrameLimit == true"><small>Please note:  Records will be removed from this list 14 days after the submission's effective date.</small></div>
+            </div>
+
+            <div class="col-lg-5 col-sm-5 col-xs-12">
+                <div class="input-group margin-top-23px">
+                    <input class="form-control" ng-model="searchText" placeholder="Search" type="search" ng-change="search()" /> <span class="input-group-addon">
+                                 <span class="glyphicon glyphicon-search"></span>
+                               </span>
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div ng-show="home.loadingData === true" class="section-inner clearfix text-center"><div class="loader-2 blue-loader">Loading...</div></div>
+        <div class="row" ng-show="home.loadingData === false">
+            <div class="col-lg-12 text-center">
+                <div class="table-responsive">
+                    <div ng-show="(currentPage == ItemsByPage.length) && searchText" class="icon-color-red"><br><br><b>Your search returned no matches.</b></div>
+                    <table class="table table-responsive
+                    table-striped table-hover text-left  data-table myTable" ng-class="{displayNone: currentPage == ItemsByPage.length}">
+                        <thead>
+                        <tr>
+                            <th nowrap>
+                                <a href="javascript:void(0);" ng-click="sort('QuoteId',$event)">
+                                    Quote #
+                                    <span class="{{Header[0]}}"></span>
+                                </a>
+                                <!--<a href="javascript:void(0);" ng-click="showQuoteId = !showQuoteId"> <i
+                                        class="fa fa-filter fa-lg"></i></a>-->
+                                <!--ng-show="showQuoteId"-->
+                                <div multi-select
+                                     directive-id="directiveQuoteId"
+                                     input-model="home.arrQuoteNumber"
+                                     button-label="QuoteNumber"
+                                     item-label="QuoteNumber"
+                                     tick-property="selected"
+                                     output-model="home.arrFilteredQuoteNumber"
+                                     max-height="90px"
+                                     helper-elements="all none"
+                                     on-item-click="customSearchPageFilter()"
+                                     on-select-all="customSearchPageFilter('select-all-QuoteId')"
+                                     on-select-none="customSearchPageFilter('select-none-QuoteId')"
+                                     max-labels="0">
+                                </div>
+                            </th>
+                            <th nowrap>
+                                <a href="javascript:void(0);" ng-click="sort('CreatedOn',$event)">
+                                    Application Date
+                                    <span class="{{Header[1]}}"></span>
+                                </a>
+                                <div multi-select
+                                     directive-id="directiveCreatedOn"
+                                     input-model="home.arrCreatedOn"
+                                     button-label="createdOn'"
+                                     item-label="createdOn"
+                                     tick-property="selected"
+                                     output-model="home.arrFilteredCreatedOn"
+                                     max-height="90px"
+                                     helper-elements="all none"
+                                     on-item-click="customSearchPageFilter()"
+                                     on-select-all="customSearchPageFilter('select-all-CreatedOn')"
+                                     on-select-none="customSearchPageFilter('select-none-CreatedOn')"
+                                     max-labels="0"
+                                     on-item-click="submissionClick(data)">
+                                </div>
+                            </th>
+                            <th nowrap>
+                                <a href="javascript:void(0);" ng-click="sort('EffectiveDate',$event)">
+                                    Effective Date
+                                    <span class="{{Header[2]}}"></span>
+                                </a>
+                                <div multi-select
+                                     directive-id="directiveEffectiveDate"
+                                     input-model="home.arrEffectiveDate"
+                                     button-label="effectiveDate'"
+                                     item-label="effectiveDate"
+                                     tick-property="selected"
+                                     output-model="home.arrFilteredEffectiveDate"
+                                     max-height="90px"
+                                     helper-elements="all none"
+                                     on-item-click="customSearchPageFilter()"
+                                     on-select-all="customSearchPageFilter('select-all-EffectiveDate')"
+                                     on-select-none="customSearchPageFilter('select-none-EffectiveDate')"
+                                     max-labels="0">
+                                </div>
+                            </th>
+                            <th nowrap>
+                                <a href="javascript:void(0);" ng-click="sort('PolicyType',$event)">
+                                    Policy Type
+                                    <span class="{{Header[3]}}"></span>
+                                    <div multi-select
+                                         directive-id="directivePolicyType"
+                                         input-model="home.arrPolicyType"
+                                         button-label="policyType"
+                                         item-label="policyType"
+                                         tick-property="selected"
+                                         output-model="home.arrFilteredPolicyType"
+                                         max-height="90px"
+                                         helper-elements="all none"
+                                         on-item-click="customSearchPageFilter()"
+                                         on-select-all="customSearchPageFilter('select-all-PolicyType')"
+                                         on-select-none="customSearchPageFilter('select-none-PolicyType')"
+                                         max-labels="0">
+                                    </div>
+                                </a>
+                            </th>
+                            <th nowrap>
+                                <a href="javascript:void(0);" ng-click="sort('ApplicantName',$event)">
+                                    Applicant Name
+                                    <span class="{{Header[4]}}"></span>
+                                </a>
+                                <div multi-select
+                                     directive-id="directiveApplicantName"
+                                     input-model="home.arrApplicantName"
+                                     button-label="applicantName"
+                                     item-label="applicantName"
+                                     tick-property="selected"
+                                     output-model="home.arrFilteredApplicantName"
+                                     max-height="90px"
+                                     helper-elements="all none"
+                                     on-item-click="customSearchPageFilter()"
+                                     on-select-all="customSearchPageFilter('select-all-ApplicantName')"
+                                     on-select-none="customSearchPageFilter('select-none-ApplicantName')"
+                                     max-labels="0">
+                                </div>
+                            </th>
+                            <th nowrap>
+                                <a href="javascript:void(0);" ng-click="sort('Addr',$event)">
+                                    Applicant Address
+                                    <span class="{{Header[5]}}"></span>
+                                </a>
+                                <div multi-select
+                                     directive-id="directiveAddr"
+                                     input-model="home.arrStreetAddress"
+                                     button-label="streetAddress"
+                                     item-label="streetAddress"
+                                     tick-property="selected"
+                                     output-model="home.arrFilteredApplicantAdd"
+                                     max-height="90px"
+                                     helper-elements="all none"
+                                     on-item-click="customSearchPageFilter()"
+                                     on-select-all="customSearchPageFilter('select-all-StreetAddress')"
+                                     on-select-none="customSearchPageFilter('select-none-StreetAddress')"
+                                     max-labels="0">
+                                </div>
+                            </th>
+                            <th nowrap>
+                                <a href="javascript:void(0);" ng-click="sort('SubmittedBy',$event)">
+                                    Submitted by
+                                    <span class="{{Header[6]}}"></span>
+                                </a>
+                                <div multi-select
+                                     directive-id="directiveSubmittedBy"
+                                     input-model="home.arrSubmittedBy"
+                                     button-label="SubmittedBy"
+                                     item-label="SubmittedBy"
+                                     tick-property="selected"
+                                     output-model="home.arrFilteredSubmittedBy"
+                                     max-height="90px"
+                                     helper-elements="all none"
+                                     on-item-click="customSearchPageFilter()"
+                                     on-select-all="customSearchPageFilter('select-all-SubmittedBy')"
+                                     on-select-none="customSearchPageFilter('select-none-SubmittedBy')"
+                                     max-labels="0">
+                                </div>
+                            </th>
+
+                            <th nowrap>
+                                <a href="javascript:void(0);" ng-click="sort('Agency',$event)">
+                                    Agency
+                                    <span class="{{Header[7]}}"></span>
+                                </a>
+                                <div multi-select
+                                     directive-id="directiveAgency"
+                                     input-model="home.arrAgencyName"
+                                     button-label="agencyName"
+                                     item-label="agencyName"
+                                     tick-property="selected"
+                                     output-model="home.arrFilteredAgencyName"
+                                     max-height="90px"
+                                     helper-elements="all none"
+                                     on-item-click="customSearchPageFilter()"
+                                     on-select-all="customSearchPageFilter('select-all-AgencyName')"
+                                     on-select-none="customSearchPageFilter('select-none-AgencyName')"
+                                     max-labels="0">
+                                </div>
+                            </th>
+
+                            <th nowrap>
+                                <a href="javascript:void(0);" ng-click="sort('Status',$event)">
+                                    Status
+                                    <span class="{{Header[8]}}"></span>
+                                </a>
+                                <div multi-select
+                                     directive-id="directiveStatus"
+                                     input-model="home.arrStatus"
+                                     button-label="status"
+                                     item-label="status"
+                                     tick-property="selected"
+                                     output-model="home.arrFilteredStatus"
+                                     max-height="90px"
+                                     helper-elements="all none"
+                                     on-item-click="customSearchPageFilter()"
+                                     on-select-all="customSearchPageFilter('select-all-Status')"
+                                     on-select-none="customSearchPageFilter('select-none-Status')"
+                                     max-labels="0">
+                                </div>
+                            </th>
+                            <th ng-if="home.isCancelOrResetApplicable === true " nowrap>
+                                <a href="javascript:void(0);">
+                                    Action
+                                    <span class=""></span>
+                                </a>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--  | orderBy:columnToOrder:reverse| filter:filterDate--> <!--| filter:customSearchPageFilter-->
+                        <tr ng-repeat="submisssion in home.ItemsByPage[currentPage] " >
+
+                            <td ng-click="home.goToUnderwriting(submisssion.ApplicationId, submisssion.Status.StatusName, submisssion.LOB, submisssion.PolicyType, submisssion.IsBoltApplication )">{{submisssion.QuoteNumber}}</td>
+                            <td ng-click="home.goToUnderwriting(submisssion.ApplicationId, submisssion.Status.StatusName, submisssion.LOB, submisssion.PolicyType, submisssion.IsBoltApplication)">{{submisssion.CreatedOn | moment:'MM/DD/YYYY'}}</td>
+                            <td ng-click="home.goToUnderwriting(submisssion.ApplicationId, submisssion.Status.StatusName, submisssion.LOB, submisssion.PolicyType, submisssion.IsBoltApplication)">{{submisssion.EffectiveDate | date:"MM/dd/yyyy"}}</td>
+                            <td ng-click="home.goToUnderwriting(submisssion.ApplicationId, submisssion.Status.StatusName, submisssion.LOB, submisssion.PolicyType, submisssion.IsBoltApplication)">{{submisssion.PolicyType}}</td>
+                            <td class="width-15-per" ng-click="home.goToUnderwriting(submisssion.ApplicationId, submisssion.Status.StatusName, submisssion.LOB, submisssion.PolicyType, submisssion.IsBoltApplication)">{{submisssion.Applicant.ApplicantName}}</td>
+                            <td class="width-15-per" ng-click="home.goToUnderwriting(submisssion.ApplicationId, submisssion.Status.StatusName, submisssion.LOB, submisssion.PolicyType, submisssion.IsBoltApplication)">{{submisssion.Locations[0].StreetAddress}}</td>
+                            <td ng-click="home.goToUnderwriting(submisssion.ApplicationId, submisssion.Status.StatusName, submisssion.LOB, submisssion.PolicyType, submisssion.IsBoltApplication)">{{submisssion.AgentName}}</td>
+                            <td class="width-15-per" ng-click="home.goToUnderwriting(submisssion.ApplicationId,submisssion.Status.StatusName, submisssion.LOB, submisssion.PolicyType, submisssion.IsBoltApplication)">{{submisssion.Agency.AgencyName}}</td>
+                            <td ng-click="home.goToUnderwriting(submisssion.ApplicationId, submisssion.Status.StatusName, submisssion.LOB, submisssion.PolicyType, submisssion.IsBoltApplication)">
+                                    <span class="tblDashboardColStatus" ng-class="{statusBound: submisssion.Status.StatusName == 'Bound',
+                                statusDeclined: submisssion.Status.StatusName == 'Declined',
+                                statusQuoted: submisssion.Status.StatusName == 'UW Review',
+                                statusBindable: submisssion.Status.StatusName == 'Quote Option(s)',
+                                statusSubmittedForBinding: submisssion.Status.StatusName == 'SubmittedForBinding',
+                                statusIncomplete: submisssion.Status.StatusName == 'Incomplete',
+                                statusCancelled:submisssion.Status.StatusName == 'Canceled' || submisssion.Status.StatusName == 'Terminated by Agent',
+                                statusSubmitted: submisssion.Status.StatusName == 'Submitted' }">{{submisssion.Status.StatusName}}</span>
+                            </td>
+                            <td>
+                                    <span ng-if="home.isCancelOrResetApplicable === true ">
+                                        <input type="button" name="Reset" value="&nbsp;Reset&nbsp;" class="btn btn-xs btn-info width-100-per" ng-if="submisssion.Status.StatusName != 'Incomplete' && submisssion.Status.StatusName != 'Bound'" ng-click="home.toggleCancelResetConfirmationModal(submisssion.QuoteNumber, 'Reset')" title="Reset status to Incomplete" />
+                                        <input type="button" name="Cancel" value="Cancel" class="btn btn-xs btn-info width-100-per" ng-if="submisssion.Status.StatusName == 'Incomplete'" ng-click="home.toggleCancelResetConfirmationModal(submisssion.QuoteNumber, 'Cancel')" title="Set status to Canceled" />
+                                    </span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!--<ul class="pagination pagination-sm">
+                    <li ng-class="{active:0}">
+                        <a href="javascript:void(0);" ng-click="firstPage()">First</a>
+                    </li>
+                    <li ng-repeat="n in range(ItemsByPage.length)">
+                        <a href="javascript:void(0);" ng-click="setPage()" ng-bind="n+1">1</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" ng-click="lastPage()">Last</a>
+                    </li>
+                </ul>-->
+                <ul class="pagination pagination-sm">
+                    <li ng-class="{displayNone:currentPage == 0}">
+                        <a href="javascript:void(0);" ng-click="firstPage()">First</a>
+                    </li>
+                    <li ng-class="{displayNone:currentPage == 0}">
+                        <a href="javascript:void(0);" ng-click="prevPage()">Prev</a>
+                    </li>
+                    <li ng-repeat="n in range()" ng-class="{active: n == currentPage}" >
+                        <a href="javascript:void(0);" ng-click="setPage()" ng-bind="n+1">1</a>
+                    </li>
+                    <li ng-class="{displayNone:currentPage == ItemsByPage.length - 1 || currentPage == ItemsByPage.length}">
+                        <a href="javascript:void(0);" ng-click="nextPage()">Next</a>
+                    </li>
+                    <li ng-class="{displayNone:currentPage == ItemsByPage.length - 1 || currentPage == ItemsByPage.length}">
+                        <a href="javascript:void(0);" ng-click="lastPage()">Last</a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div>
+    <div class="col-md-12 footer-position">
+        <footer class="footer">
+            <div class="container">
+                <div ng-include="'common/footer.html'" class="container"></div>
+            </div>
+        </footer>
+    </div>
+</div>
+<script type="text/ng-template" id="notEditable.html">
+    <div role="form">
+        <div class="modal-body">
+            <div class="form-group">
+                <button type="button" class="close" data-dismiss="modal" ng-click="ok()">&times;</button>
+                <label for="riskclones">Request Denied! This application is {{status}}</label>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="cancelResetConfirmationModal.html">
+    <!--<div class="modal-header">
+        <h3 class="modal-title">Clone Location</h3>
+    </div>-->
+    <div class="modal-body">
+
+        <div class="form-group">
+            <label for="deleteConfirmation">Are you sure you want to {{msgValue}} application {{quoteNumber}}? </label>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">Ok</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</script>

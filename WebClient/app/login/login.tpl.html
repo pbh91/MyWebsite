@@ -1,0 +1,141 @@
+<div ng-include="'common/navigationBar.html'"></div>
+
+<div class="body-content login-body">
+    <div class="section-inner clearfix">
+        <div class="row">
+
+            <div class="login">
+                    <div class="center-block logig-form">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading"> <span class="position-absolute"> <label>Login: &nbsp;</label></span>
+
+                            <span id="radio-a" class="margin-left-60px">
+                                <label for="systemType1" class="margin-bottom-0px">
+                                    <input id="systemType1" type="radio" name="systemType" value="agencyLink" ng-model="login.user.systemType" />
+                                    <span class="circ"><span class="dot"></span></span>
+                                    In-Force Policy Documents (Agency Link)
+                                </label>
+
+                                <label for="systemType2" class="margin-bottom-0px">
+                                    <input id="systemType2" type="radio" name="systemType" ng-model="login.user.systemType" value="breeze"/>
+                                    <span class="circ"><span class="dot"></span></span>
+                                    New Business Submission (Breeze)
+                                </label>
+                            </span>
+                                 </div>
+                            <div class="panel-body">
+                                <form role="form" name="userForm" id="frmLogin" class="login-form" ng-submit="login.postLogin()" method="post" novalidate>
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="col-md-9">
+                                                <div class="input-group login-input">
+                                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                                    <input class="form-control username" ng-model="login.user.username" name="UserName" ng-focus="login.loginButton('reset')" placeholder="Username" type="text" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <a tabindex="11" rel="Next" href="https://wesvstgwa.csc-fsg.com/AgencyLinkC.0/ForgotUserId.aspx" class="btn btn-link">Forgot User ID?</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 margin-top-12px">
+                                            <div class="col-md-9">
+                                                <div class="input-group login-input">
+                                                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                                    <input class="form-control grant_type" ng-model="login.user.password" name="Password" ng-focus="login.loginButton('reset')" placeholder="Password" type="password" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <a tabindex="12" rel="Next" href="https://wesvstgwa.csc-fsg.com/AgencyLinkC.0/ForgotPassword.aspx" class="btn btn-link">Forgot Password?</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 margin-top-12px margin-left-2per">
+
+                                                <input type="checkbox" name="rememberMe" value="rememberMe"> Remember me
+
+                                        </div>
+                                        <div>
+                                            <div class="col-md-12">
+
+                                                <div class="col-md-4  col-xs-4 margin-top-12px"></div>
+
+                                                <div class="col-md-2  col-xs-2 margin-top-12px">
+                                                    <button id="login-button" type="submit" class="btn btn-ar btn-primary pull-right login-button" ng-click="login.user.changePassword = 0;">Login</button>
+                                                    <!--<input type="submit" class="btn btn-ar btn-primary login-button"  value="Login" id="loginButton" name="loginButton">-->
+                                                </div>
+                                                <div class="col-md-3  col-xs-3 margin-top-12px">
+                                                    <input type="submit" class="btn btn-info change-Password-button" value="Change Password" id="ChangePasswordButton" name="ChangePasswordButton" ng-click="login.user.changePassword = 1;">
+
+                                                </div>
+                                                <div class="col-md-3  col-xs-3 margin-top-12px"></div>
+                                        </div>
+                                        </div><br> 
+
+                                        <input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+                                        <div class="clearfix"> 	<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+                                            <input type="hidden" ng-model="login.user.changePassword"/></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="col-md-12 footer-position">
+        <footer class="footer">
+            <div class="container">
+                <div ng-include="'common/footer.html'" class="container"></div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="passwordExpireNoticeModal.html">
+   <div class="modal-header">
+        <h3 class="modal-title">Consider changing your password</h3>
+    </div>
+    <div class="modal-body">
+
+        <div class="form-group">
+            <p>Your Password will expire in <b>{{daysRemaining}}</b> days.</p>
+            <p>To change your password click on <b>"Change Password"</b> button.<p>
+            <p>To continue click on <b>"Ok"</b> button.<p>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">Ok</button>
+        <button class="btn btn-info change-Password-button" ng-click="changePassword()">ChangePassword</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="passwordExpiredModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Your password has expired</h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <p>To change your password click on <b>"Change Password"</b> button.<p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-info change-Password-button" ng-click="changePassword()">Change Password</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="errorMessages.html">
+    <div role="form">
+            <div class="modal-body">
+                <div class="form-group">
+                    <button type="button" class="close" data-dismiss="modal" ng-click="ok()">&times;</button>
+                    <span class="font-bold" ng-bind-html="message"></span>
+                </div>
+                <div class="modal-footer"><button class="btn btn-primary" ng-click="ok()" data-dismiss="modal">OK</button></div>
+            </div>       
+    </div>
+</script>
