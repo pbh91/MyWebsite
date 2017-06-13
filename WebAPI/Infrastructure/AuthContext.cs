@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using WebAPI.Entities;
 
 namespace WebAPI.Infrastructure
 {
@@ -13,5 +15,7 @@ namespace WebAPI.Infrastructure
         {
 
         }
+
+        public DbSet<Client> Clients { get; set; }
     }
 }

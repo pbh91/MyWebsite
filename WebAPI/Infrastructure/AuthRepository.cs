@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using WebAPI.Entities;
 using WebAPI.Models;
 
 namespace WebAPI.Infrastructure
@@ -59,6 +60,13 @@ namespace WebAPI.Infrastructure
             var result = await _userManager.AddLoginAsync(userId, login);
 
             return result;
+        }
+
+        public Client FindClient(string clientId)
+        {
+            var client = _ctx.Clients.Find(clientId);
+
+            return client;
         }
 
         public void Dispose()

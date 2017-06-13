@@ -13,42 +13,21 @@ namespace WebAPI.Infrastructure
 {
     public class ChallengeResult : IHttpActionResult
     {
-        private const string XsrfKey = "XsrfId";
- 
-        public ChallengeResult(string provider, string redirectUri, HttpRequestMessage request)
-            : this(provider, redirectUri, null, request)
+        public string LoginProvider { get; set; }
+        public HttpRequestMessage Request { get; set; }
+
+        public ChallengeResult(string loginProvider, ApiController controller)
         {
+            LoginProvider = loginProvider;
+            Request = controller.Request;
         }
-
-        public ChallengeResult(string provider, string redirectUri, string userId, HttpRequestMessage request)
-        {
-            AuthenticationProvider = provider;
-            RedirectUri = redirectUri;
-            UserId = userId;
-            MessageRequest = request;
-        }
-
-        public string AuthenticationProvider { get; private set; }
-
-        public string RedirectUri { get; private set; }
-
-        public string UserId { get; private set; }
-
-        public HttpRequestMessage MessageRequest { get; private set; }
 
         public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
         {
-            var properties = new AuthenticationProperties() { RedirectUri = this.RedirectUri };
-            if (UserId != null)
-            {
-                properties.Dictionary[XsrfKey] = UserId;
-            }
-
-            MessageRequest.GetOwinContext().Authentication.Challenge(properties, AuthenticationProvider);
+            Request.GetOwinContext().Authentication.Challenge(LoginProvider);
 
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
-            response.RequestMessage = MessageRequest;
-
+            response.RequestMessage = Request;
             return Task.FromResult(response);
         }
     }
